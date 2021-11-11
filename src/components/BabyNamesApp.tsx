@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import namesData from '../data/babyNames.json';
-import { BabyName } from './BabyName';
-import { NameInfo } from '../types';
+import { GenderSelector, NameInfo } from '../types';
+import Controls from './Controls';
 import { FavouritesList } from './FavouritesList';
+import { MainList } from './MainList';
+
 const allBabyNames: NameInfo[] = namesData as NameInfo[];
+
 export function BabyNamesApp() {
 
-  type GenderSelector = 'm' | 'f' | 'a';
   const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
   const [genderSelector, setGenderSelector] = useState<GenderSelector>('a');
 
@@ -19,6 +21,7 @@ export function BabyNamesApp() {
   }
 
   function handleAddToFavourites(info: NameInfo) {
+    //don't allow duplicate to enter list
     if (favouritesIds.includes(info.id)) {
       return;
     }
@@ -35,13 +38,13 @@ export function BabyNamesApp() {
 
   return (
     <div className='babyNamesApp'>
-      <div className='controls'>
-        There are {allBabyNames.length} total. showing {namesToShowInMain.length}
-        <button onClick={() => handleGenderSelection('f')}>F</button>
-        <button onClick={() => handleGenderSelection('m')}>M</button>
-        <button onClick={() => handleGenderSelection('a')}>A</button>
-        {genderSelector}
-      </div>
+
+      <Controls
+        allBabyNames={allBabyNames}
+        namesToShowInMain={namesToShowInMain}
+        currentGenderSelector={genderSelector}
+        onGenderSelectionClick={handleGenderSelection}
+      />
 
       <FavouritesList
         idsList={favouritesIds}
@@ -49,17 +52,10 @@ export function BabyNamesApp() {
         onClick={handleRemoveFromFavourites}
       />
 
-      <div className='namesList'>
-        {namesToShowInMain.map(nameInfo => (
-          <BabyName
-            key={nameInfo.id}
-            info={nameInfo}
-            onClick={handleAddToFavourites}
-          />
-        )
-        )}
-      </div>
+      <MainList
+        names={namesToShowInMain}
+        onClick={handleAddToFavourites}
+      />
     </div>
   );
-
 }
