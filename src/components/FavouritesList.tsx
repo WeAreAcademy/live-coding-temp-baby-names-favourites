@@ -5,6 +5,7 @@ import { NameInfo } from '../types';
 interface FavouritesListProps {
     allInfo: NameInfo[];
     idsList: number[];
+    onClick: (info: NameInfo) => void;
 }
 export function FavouritesList(props: FavouritesListProps) {
     const allNamesInfo = props.allInfo;
@@ -17,9 +18,7 @@ export function FavouritesList(props: FavouritesListProps) {
                     <BabyName
                         info={nameInfo}
                         key={nameInfo.id}
-                        onClick={() => {
-                            console.log('clicked from favourites: ' + nameInfo.name);
-                        }} />)
+                        onClick={props.onClick} />)
                 )}
             </div>
         </div>);

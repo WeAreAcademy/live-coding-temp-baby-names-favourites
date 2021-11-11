@@ -5,9 +5,8 @@ import { NameInfo } from '../types';
 import { FavouritesList } from './FavouritesList';
 const allBabyNames: NameInfo[] = namesData;
 export function BabyNamesApp() {
-
-
   const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
+
   function handleAddToFavourites(info: NameInfo) {
     if (favouritesIds.includes(info.id)) {
       return;
@@ -15,13 +14,25 @@ export function BabyNamesApp() {
     const newListOfIds = [...favouritesIds, info.id];
     setFavouritesIds(newListOfIds);
   }
+
+
+  function handleRemoveFromFavourites(info: NameInfo) {
+    const newListOfIds: number[] = favouritesIds.filter(existingId => existingId !== info.id);
+    setFavouritesIds(newListOfIds);
+  }
+
+
   return (
     <div className='babyNamesApp'>
       <div className='controls'>
         There are {allBabyNames.length} allBabyNames
       </div>
 
-      <FavouritesList idsList={favouritesIds} allInfo={allBabyNames} />
+      <FavouritesList
+        idsList={favouritesIds}
+        allInfo={allBabyNames}
+        onClick={handleRemoveFromFavourites}
+      />
 
       <div className='namesList'>
         {allBabyNames.map(nameInfo => (
