@@ -6,8 +6,12 @@ import { FavouritesList } from './FavouritesList';
 const allBabyNames: NameInfo[] = namesData;
 export function BabyNamesApp() {
 
-  const [favouritesIds, setFavouritesIds] = useState([20, 180, 30]);
+
+  const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
   function handleAddToFavourites(info: NameInfo) {
+    if (favouritesIds.includes(info.id)) {
+      return;
+    }
     const newListOfIds = [...favouritesIds, info.id];
     setFavouritesIds(newListOfIds);
   }
