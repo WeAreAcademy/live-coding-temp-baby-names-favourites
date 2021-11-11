@@ -1,5 +1,5 @@
 export interface NameInfo {
     id: number;
     name: string;
-    sex: string;
+    sex: 'm' | 'f';
 }

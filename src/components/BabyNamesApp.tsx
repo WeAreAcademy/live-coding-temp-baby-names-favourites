@@ -3,11 +3,20 @@ import namesData from '../data/babyNames.json';
 import { BabyName } from './BabyName';
 import { NameInfo } from '../types';
 import { FavouritesList } from './FavouritesList';
-const allBabyNames: NameInfo[] = namesData;
+const allBabyNames: NameInfo[] = namesData as NameInfo[];
 export function BabyNamesApp() {
-  const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
 
-  const namesToShowInMain = allBabyNames.filter(info => !favouritesIds.includes(info.id));
+  type GenderSelector = 'm' | 'f' | 'a';
+  const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
+  const [genderSelector, setGenderSelector] = useState<GenderSelector>('a');
+
+  const namesToShowInMain = allBabyNames
+    .filter(info => !favouritesIds.includes(info.id))
+    .filter(info => genderSelector === 'a' || info.sex === genderSelector);
+
+  function handleGenderSelection(gender: GenderSelector) {
+    setGenderSelector(gender);
+  }
 
   function handleAddToFavourites(info: NameInfo) {
     if (favouritesIds.includes(info.id)) {
@@ -27,7 +36,11 @@ export function BabyNamesApp() {
   return (
     <div className='babyNamesApp'>
       <div className='controls'>
-        There are {allBabyNames.length} allBabyNames
+        There are {allBabyNames.length} total. showing {namesToShowInMain.length}
+        <button onClick={() => handleGenderSelection('f')}>F</button>
+        <button onClick={() => handleGenderSelection('m')}>M</button>
+        <button onClick={() => handleGenderSelection('a')}>A</button>
+        {genderSelector}
       </div>
 
       <FavouritesList
