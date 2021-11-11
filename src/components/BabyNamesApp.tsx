@@ -7,6 +7,8 @@ const allBabyNames: NameInfo[] = namesData;
 export function BabyNamesApp() {
   const [favouritesIds, setFavouritesIds] = useState<number[]>([]);
 
+  const namesToShowInMain = allBabyNames.filter(info => !favouritesIds.includes(info.id));
+
   function handleAddToFavourites(info: NameInfo) {
     if (favouritesIds.includes(info.id)) {
       return;
@@ -35,7 +37,7 @@ export function BabyNamesApp() {
       />
 
       <div className='namesList'>
-        {allBabyNames.map(nameInfo => (
+        {namesToShowInMain.map(nameInfo => (
           <BabyName
             key={nameInfo.id}
             info={nameInfo}
